@@ -1,0 +1,216 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ========================================================
+// PHASE 01: HEALTH CHECK
+// ========================================================
+model SystemHealthCheck {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("system_health_checks")
+}
+
+// ========================================================
+// PHASE 03: AUTHENTICATION & ACCESS CONTROL
+// ========================================================
+
+enum AccountStatus {
+  ACTIVE
+  PENDING_VERIFICATION
+  SUSPENDED
+  DEACTIVATED
+}
+
+enum RoleType {
+  CONSUMER
+  BUSINESS_OWNER
+  MERCHANT_STAFF
+  CONTENT_MODERATOR
+  VERIFICATION_OFFICER
+  SALES_SUPPORT_AGENT
+  FINANCE_MANAGER
+  SUPER_ADMIN
+}
+
+model User {
+  id                String        @id @default(uuid())
+  mobile            String        @unique @db.VarChar(15) // E.164 format (+91XXXXXXXXXX)
+  isMobileVerified  Boolean       @default(false)
+  name              String?       @db.VarChar(100)
+  email             String?       @unique @db.VarChar(255)
+  accountStatus     AccountStatus @default(ACTIVE)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  // Relations
+  userRoles         UserRole[]
+  sessions          AuthSession[]
+  otpChallenges     OtpChallenge[]
+  auditLogs         AuthAuditLog[]
+  consentRecords    ConsentRecord[]
+
+  @@index([mobile])
+  @@index([email])
+  @@index([accountStatus])
+  @@map("users")
+}
+
+model Role {
+  id              String           @id @default(uuid())
+  name            RoleType         @unique
+  displayName     String           @db.VarChar(100)
+  description     String?          @db.VarChar(255)
+  isSystem        Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  // Relations
+  userRoles       UserRole[]
+  rolePermissions RolePermission[]
+
+  @@map("roles")
+}
+
+model Permission {
+  id              String           @id @default(uuid())
+  code            String           @unique @db.VarChar(100) // e.g. "users:read", "businesses:verify"
+  displayName     String           @db.VarChar(100)
+  module          String           @db.VarChar(50)  // e.g. "auth", "users", "directory", "admin"
+  description     String?          @db.VarChar(255)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  // Relations
+  rolePermissions RolePermission[]
+
+  @@index([module])
+  @@map("permissions")
+}
+
+model UserRole {
+  id         String   @id @default(uuid())
+  userId     String
+  roleId     String
+  assignedAt DateTime @default(now())
+  assignedBy String?  @db.VarChar(100) // User ID or 'SYSTEM_SEED' or 'ADMIN_BOOTSTRAP'
+
+  // Relations
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role       Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@index([userId])
+  @@index([roleId])
+  @@map("user_roles")
+}
+
+model RolePermission {
+  id           String     @id @default(uuid())
+  roleId       String
+  permissionId String
+  assignedAt   DateTime   @default(now())
+
+  // Relations
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@index([roleId])
+  @@index([permissionId])
+  @@map("role_permissions")
+}
+
+model OtpChallenge {
+  id          String    @id @default(uuid())
+  mobile      String    @db.VarChar(15)
+  userId      String?
+  hashedOtp   String    @db.VarChar(128) // SHA-256 hash of (salt + otp)
+  salt        String    @db.VarChar(64)  // Cryptographic per-challenge salt
+  expiresAt   DateTime
+  attempts    Int       @default(0)
+  maxAttempts Int       @default(3)
+  isConsumed  Boolean   @default(false)
+  consumedAt  DateTime?
+  purpose     String    @default("LOGIN") @db.VarChar(30) // LOGIN, REGISTRATION, PROFILE_UPDATE
+  ipAddress   String?   @db.VarChar(45)
+  userAgent   String?   @db.VarChar(255)
+  createdAt   DateTime  @default(now())
+
+  // Relations
+  user        User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([mobile, isConsumed, expiresAt])
+  @@index([userId])
+  @@map("otp_challenges")
+}
+
+model AuthSession {
+  id               String    @id @default(uuid())
+  userId           String
+  tokenHash        String    @unique @db.VarChar(128) // SHA-256 of session identifier
+  expiresAt        DateTime
+  isRevoked        Boolean   @default(false)
+  revokedAt        DateTime?
+  revocationReason String?   @db.VarChar(100)
+  ipAddress        String?   @db.VarChar(45)
+  userAgent        String?   @db.VarChar(255)
+  lastActiveAt     DateTime  @default(now())
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  // Relations
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([tokenHash])
+  @@index([isRevoked, expiresAt])
+  @@map("auth_sessions")
+}
+
+model ConsentRecord {
+  id          String   @id @default(uuid())
+  userId      String?
+  mobile      String   @db.VarChar(15)
+  consentType String   @db.VarChar(50) // "TERMS_AND_PRIVACY_V1", "COMMUNICATION_CONSENT"
+  ipAddress   String?  @db.VarChar(45)
+  userAgent   String?  @db.VarChar(255)
+  consentedAt DateTime @default(now())
+
+  // Relations
+  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([mobile])
+  @@map("consent_records")
+}
+
+model AuthAuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  mobile    String?  @db.VarChar(15)
+  action    String   @db.VarChar(50) // OTP_REQUESTED, OTP_VERIFIED, LOGIN_SUCCESS, LOGOUT, etc.
+  status    String   @db.VarChar(20) // "SUCCESS" | "FAILURE"
+  details   String?  @db.Text
+  ipAddress String?  @db.VarChar(45)
+  userAgent String?  @db.VarChar(255)
+  createdAt DateTime @default(now())
+
+  // Relations
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([mobile])
+  @@index([action])
+  @@index([createdAt])
+  @@map("auth_audit_logs")
+}

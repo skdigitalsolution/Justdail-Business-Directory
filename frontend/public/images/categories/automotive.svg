@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <defs>
+    <linearGradient id="a-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC"/>
+      <stop offset="100%" stop-color="#E2E8F0"/>
+    </linearGradient>
+    <linearGradient id="a-pri" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="100%" stop-color="#334155"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" rx="20" fill="url(#a-bg)"/>
+  <circle cx="200" cy="130" r="70" fill="#475569" opacity="0.1"/>
+  <!-- Car Silhouette -->
+  <path d="M140 145l20-30c5-7 12-10 20-10h40c8 0 15 3 20 10l20 30h10c5 0 10 5 10 10v20h-15a20 20 0 0 1-40 0h-50a20 20 0 0 1-40 0h-15v-20c0-5 5-10 10-10z" fill="url(#a-pri)"/>
+  <!-- Wheels -->
+  <circle cx="165" cy="175" r="14" fill="#0F172A"/>
+  <circle cx="165" cy="175" r="6" fill="#94A3B8"/>
+  <circle cx="235" cy="175" r="14" fill="#0F172A"/>
+  <circle cx="235" cy="175" r="6" fill="#94A3B8"/>
+  <text x="200" y="260" font-family="system-ui, sans-serif" font-weight="700" font-size="20" fill="#1E293B" text-anchor="middle">Automotive & Dealers</text>
+</svg>

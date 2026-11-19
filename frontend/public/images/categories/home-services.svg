@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <defs>
+    <linearGradient id="hs-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEFCE8"/>
+      <stop offset="100%" stop-color="#FEF9C3"/>
+    </linearGradient>
+    <linearGradient id="hs-pri" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#CA8A04"/>
+      <stop offset="100%" stop-color="#A16207"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" rx="20" fill="url(#hs-bg)"/>
+  <circle cx="200" cy="130" r="70" fill="#CA8A04" opacity="0.1"/>
+  <!-- House + Wrench -->
+  <path d="M150 140v50h100v-50L200 95z" fill="url(#hs-pri)"/>
+  <rect x="185" y="150" width="30" height="40" fill="#FEFCE8"/>
+  <path d="M225 105l25-25c5-5 15-5 20 0s5 15 0 20l-25 25z" fill="#EAB308"/>
+  <circle cx="255" cy="95" r="5" fill="#FEFCE8"/>
+  <text x="200" y="260" font-family="system-ui, sans-serif" font-weight="700" font-size="20" fill="#854D0E" text-anchor="middle">Home Services & Repair</text>
+</svg>

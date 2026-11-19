@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <defs>
+    <linearGradient id="e-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5F3FF"/>
+      <stop offset="100%" stop-color="#EDE9FE"/>
+    </linearGradient>
+    <linearGradient id="e-pri" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#6D28D9"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" rx="20" fill="url(#e-bg)"/>
+  <circle cx="200" cy="130" r="70" fill="#7C3AED" opacity="0.1"/>
+  <!-- Graduation Cap -->
+  <polygon points="200,85 270,115 200,145 130,115" fill="url(#e-pri)"/>
+  <path d="M155 130v30c0 20 20 35 45 35s45-15 45-35v-30" fill="url(#e-pri)"/>
+  <path d="M255 125v45" stroke="#F59E0B" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="255" cy="173" r="5" fill="#F59E0B"/>
+  <text x="200" y="260" font-family="system-ui, sans-serif" font-weight="700" font-size="20" fill="#5B21B6" text-anchor="middle">Education & Coaching</text>
+</svg>

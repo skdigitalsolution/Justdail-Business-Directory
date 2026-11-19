@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <defs>
+    <linearGradient id="h-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EFF6FF"/>
+      <stop offset="100%" stop-color="#DBEAFE"/>
+    </linearGradient>
+    <linearGradient id="h-pri" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" rx="20" fill="url(#h-bg)"/>
+  <circle cx="200" cy="130" r="70" fill="#2563EB" opacity="0.1"/>
+  <!-- Hotel building & stars -->
+  <rect x="150" y="80" width="100" height="120" rx="6" fill="url(#h-pri)"/>
+  <rect x="185" y="160" width="30" height="40" rx="2" fill="#FFFFFF"/>
+  <rect x="165" y="100" width="15" height="15" rx="2" fill="#93C5FD"/>
+  <rect x="192" y="100" width="15" height="15" rx="2" fill="#93C5FD"/>
+  <rect x="220" y="100" width="15" height="15" rx="2" fill="#93C5FD"/>
+  <rect x="165" y="125" width="15" height="15" rx="2" fill="#93C5FD"/>
+  <rect x="192" y="125" width="15" height="15" rx="2" fill="#93C5FD"/>
+  <rect x="220" y="125" width="15" height="15" rx="2" fill="#93C5FD"/>
+  <!-- Stars -->
+  <polygon points="175,65 178,72 185,73 180,78 181,85 175,81 169,85 170,78 165,73 172,72" fill="#F59E0B"/>
+  <polygon points="200,58 203,65 210,66 205,71 206,78 200,74 194,78 195,71 190,66 197,65" fill="#F59E0B"/>
+  <polygon points="225,65 228,72 235,73 230,78 231,85 225,81 219,85 220,78 215,73 222,72" fill="#F59E0B"/>
+  <text x="200" y="260" font-family="system-ui, sans-serif" font-weight="700" font-size="20" fill="#1E40AF" text-anchor="middle">Hotels & Resorts</text>
+</svg>

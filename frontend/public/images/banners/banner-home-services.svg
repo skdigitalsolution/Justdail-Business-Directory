@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" width="1200" height="400">
+  <defs>
+    <linearGradient id="b1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B1830"/>
+      <stop offset="60%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="400" rx="24" fill="url(#b1)"/>
+  <!-- Decorative background circles -->
+  <circle cx="1050" cy="200" r="160" fill="#2563EB" opacity="0.3"/>
+  <circle cx="1120" cy="100" r="90" fill="#F59E0B" opacity="0.2"/>
+  
+  <!-- Content -->
+  <rect x="80" y="65" width="130" height="32" rx="16" fill="#F59E0B"/>
+  <text x="145" y="86" font-family="system-ui, sans-serif" font-weight="700" font-size="13" fill="#0B1830" text-anchor="middle" letter-spacing="1">VERIFIED SERVICES</text>
+  
+  <text x="80" y="150" font-family="system-ui, sans-serif" font-weight="800" font-size="42" fill="#FFFFFF">Reliable Home Repairs & AC Services</text>
+  <text x="80" y="195" font-family="system-ui, sans-serif" font-weight="400" font-size="20" fill="#BFDBFE">Connect with top-rated electricians, plumbers, and technicians across 500+ cities in India.</text>
+  
+  <!-- CTA Button representation -->
+  <rect x="80" y="240" width="200" height="52" rx="12" fill="#FFFFFF"/>
+  <text x="180" y="272" font-family="system-ui, sans-serif" font-weight="700" font-size="16" fill="#1D4ED8" text-anchor="middle">Book Services Now →</text>
+  
+  <!-- Illustration side -->
+  <g transform="translate(850, 100)">
+    <rect x="0" y="0" width="200" height="200" rx="20" fill="#FFFFFF" opacity="0.1"/>
+    <!-- House icon -->
+    <path d="M100 40l60 45v75H40V85z" fill="#93C5FD"/>
+    <path d="M100 30L30 85h20v85h100V85h20z" fill="#FFFFFF"/>
+    <rect x="85" y="110" width="30" height="60" fill="#2563EB"/>
+    <circle cx="140" cy="70" r="25" fill="#F59E0B"/>
+    <path d="M135 70l4 4 8-8" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>

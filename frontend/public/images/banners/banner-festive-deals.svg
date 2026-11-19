@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" width="1200" height="400">
+  <defs>
+    <linearGradient id="b4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#78350F"/>
+      <stop offset="60%" stop-color="#B45309"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="400" rx="24" fill="url(#b4)"/>
+  <circle cx="1030" cy="200" r="150" fill="#FDE68A" opacity="0.2"/>
+  
+  <rect x="80" y="65" width="150" height="32" rx="16" fill="#FFFFFF"/>
+  <text x="155" y="86" font-family="system-ui, sans-serif" font-weight="700" font-size="13" fill="#B45309" text-anchor="middle" letter-spacing="1">SPECIAL PROMOTIONS</text>
+  
+  <text x="80" y="150" font-family="system-ui, sans-serif" font-weight="800" font-size="42" fill="#FFFFFF">Explore Special Merchant Offers</text>
+  <text x="80" y="195" font-family="system-ui, sans-serif" font-weight="400" font-size="20" fill="#FEF3C7">Discover verified local businesses with exclusive customer discounts in your neighborhood.</text>
+  
+  <rect x="80" y="240" width="220" height="52" rx="12" fill="#FFFFFF"/>
+  <text x="190" y="272" font-family="system-ui, sans-serif" font-weight="700" font-size="16" fill="#B45309" text-anchor="middle">Explore Local Deals →</text>
+  
+  <g transform="translate(860, 90)">
+    <!-- Gift box / star -->
+    <rect x="40" y="70" width="120" height="90" rx="10" fill="#FFFFFF" opacity="0.9"/>
+    <rect x="30" y="55" width="140" height="25" rx="5" fill="#FCD34D"/>
+    <rect x="90" y="55" width="20" height="105" fill="#DC2626"/>
+    <circle cx="100" cy="40" r="15" fill="#F59E0B"/>
+  </g>
+</svg>

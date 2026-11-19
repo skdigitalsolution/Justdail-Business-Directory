@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" width="1200" height="400">
+  <defs>
+    <linearGradient id="b3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4C1D95"/>
+      <stop offset="60%" stop-color="#6D28D9"/>
+      <stop offset="100%" stop-color="#8B5CF6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="400" rx="24" fill="url(#b3)"/>
+  <circle cx="1020" cy="180" r="140" fill="#DDD6FE" opacity="0.2"/>
+  
+  <rect x="80" y="65" width="155" height="32" rx="16" fill="#F59E0B"/>
+  <text x="157" y="86" font-family="system-ui, sans-serif" font-weight="700" font-size="13" fill="#0B1830" text-anchor="middle" letter-spacing="1">FOR LOCAL BUSINESSES</text>
+  
+  <text x="80" y="150" font-family="system-ui, sans-serif" font-weight="800" font-size="42" fill="#FFFFFF">Get 10x More Customer Leads</text>
+  <text x="80" y="195" font-family="system-ui, sans-serif" font-weight="400" font-size="20" fill="#EDE9FE">Register your enterprise for free, gain a verified badge, and connect directly with high-intent buyers.</text>
+  
+  <rect x="80" y="240" width="220" height="52" rx="12" fill="#FFFFFF"/>
+  <text x="190" y="272" font-family="system-ui, sans-serif" font-weight="700" font-size="16" fill="#5B21B6" text-anchor="middle">List Your Business Free →</text>
+  
+  <g transform="translate(860, 90)">
+    <circle cx="100" cy="100" r="75" fill="#FFFFFF" opacity="0.15"/>
+    <!-- Growth chart / Rocket -->
+    <path d="M40 140l35-35 30 20 55-65" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <polygon points="160,55 160,85 130,55" fill="#FFFFFF"/>
+  </g>
+</svg>

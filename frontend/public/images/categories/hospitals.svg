@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <defs>
+    <linearGradient id="med-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ECFDF5"/>
+      <stop offset="100%" stop-color="#D1FAE5"/>
+    </linearGradient>
+    <linearGradient id="med-pri" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" rx="20" fill="url(#med-bg)"/>
+  <circle cx="200" cy="130" r="70" fill="#059669" opacity="0.1"/>
+  <!-- Shield with Red Cross -->
+  <path d="M200 70c30 0 55 10 55 10v45c0 40-30 65-55 75-25-10-55-35-55-75V80s25-10 55-10z" fill="url(#med-pri)"/>
+  <!-- Cross -->
+  <rect x="193" y="100" width="14" height="40" rx="3" fill="#FFFFFF"/>
+  <rect x="180" y="113" width="40" height="14" rx="3" fill="#FFFFFF"/>
+  <text x="200" y="260" font-family="system-ui, sans-serif" font-weight="700" font-size="20" fill="#065F46" text-anchor="middle">Hospitals & Clinics</text>
+</svg>

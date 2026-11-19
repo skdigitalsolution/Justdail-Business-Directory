@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* LocalFind India Master Color Variables */
+  --brand-navy: #132F50;
+  --brand-navy-dark: #0B1E34;
+  --brand-blue: #216FC6;
+  --brand-blue-hover: #1A5BA4;
+  --brand-blue-light: #EBF3FC;
+  --brand-orange: #F7772B;
+  --brand-orange-hover: #DE6319;
+  --brand-orange-light: #FEF2EA;
+  --brand-green: #168865;
+  --brand-green-hover: #127053;
+  --brand-green-light: #E8F5F0;
+  --brand-bg: #F5F8FC;
+  --brand-surface: #FFFFFF;
+
+  /* Backward compatibility */
+  --primary-navy: var(--brand-navy);
+  --primary-blue: var(--brand-blue);
+  --bg-color: var(--brand-bg);
+  --amber-accent: var(--brand-orange);
+  --white: var(--brand-surface);
+}
+
+body {
+  background-color: var(--brand-bg);
+  color: var(--brand-navy);
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer components {
+  /* Button Design Tokens */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-brand-blue hover:bg-brand-blue-hover text-white text-xs sm:text-sm font-bold shadow-sm transition-all duration-150 active:scale-[0.98];
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-brand-orange hover:bg-brand-orange-hover text-white text-xs sm:text-sm font-bold shadow-sm transition-all duration-150 active:scale-[0.98];
+  }
+
+  .btn-green {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-brand-green hover:bg-brand-green-hover text-white text-xs sm:text-sm font-bold shadow-sm transition-all duration-150 active:scale-[0.98];
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-gray-300 hover:border-brand-blue text-brand-navy hover:text-brand-blue text-xs sm:text-sm font-bold bg-white transition-all duration-150 active:scale-[0.98];
+  }
+
+  /* Badge Design Tokens */
+  .badge-verified {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-brand-green-light text-brand-green border border-brand-green/20;
+  }
+
+  .badge-accent {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-brand-orange-light text-brand-orange border border-brand-orange/20;
+  }
+
+  .badge-category {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-brand-blue-light text-brand-blue border border-brand-blue/20;
+  }
+
+  /* Input Form Tokens */
+  .input-brand {
+    @apply w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-xs sm:text-sm font-medium text-brand-navy placeholder-gray-400 bg-white focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-blue-100 transition-all;
+  }
+
+  /* Card Container Tokens */
+  .card-brand {
+    @apply bg-white rounded-2xl border border-gray-200/90 shadow-card hover:shadow-card-hover transition-all duration-200;
+  }
+}
