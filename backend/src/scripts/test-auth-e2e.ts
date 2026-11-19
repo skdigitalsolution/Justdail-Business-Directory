@@ -1,4 +1,4 @@
-import { PrismaClient, RoleType, AccountStatus } from '@prisma/client';
+import { PrismaClient, RoleType } from '@prisma/client';
 import * as crypto from 'crypto';
 
 const prisma = new PrismaClient();
@@ -17,6 +17,14 @@ function record(num: number, name: string, passed: boolean, details: string) {
   results.push({ num, name, passed, details });
   const icon = passed ? '✅ PASS' : '❌ FAIL';
   console.log(`${icon} [Test ${num.toString().padStart(2, '0')}] ${name}: ${details}`);
+}
+
+function getErrorString(data: any): string {
+  if (!data) return '';
+  const msg = data.message || data.error;
+  if (Array.isArray(msg)) return msg.join(', ');
+  if (typeof msg === 'string') return msg;
+  return JSON.stringify(msg);
 }
 
 async function runE2ETests() {
@@ -62,10 +70,11 @@ async function runE2ETests() {
       body: JSON.stringify({ mobile: testMobile }),
     });
     const data = await res.json();
-    if (res.status === 429 && data.message.includes('Please wait')) {
-      record(2, 'Resend Cooldown Enforcement', true, `Rejected with HTTP 429: "${data.message}"`);
+    const errText = getErrorString(data);
+    if (res.status === 429 && errText.includes('Please wait')) {
+      record(2, 'Resend Cooldown Enforcement', true, `Rejected with HTTP 429: "${errText}"`);
     } else {
-      record(2, 'Resend Cooldown Enforcement', false, `Expected 429, got ${res.status}`);
+      record(2, 'Resend Cooldown Enforcement', false, `Expected 429, got ${res.status}: ${errText}`);
     }
   } catch (err: any) {
     record(2, 'Resend Cooldown Enforcement', false, err.message);
@@ -81,10 +90,11 @@ async function runE2ETests() {
       body: JSON.stringify({ mobile: testMobile, otp: '000000' }),
     });
     const data = await res.json();
-    if (res.status === 400 && data.message.includes('attempt(s) remaining')) {
-      record(3, 'Wrong OTP Rejection', true, `Rejected with HTTP 400: "${data.message}"`);
+    const errText = getErrorString(data);
+    if (res.status === 400 && errText.includes('attempt(s) remaining')) {
+      record(3, 'Wrong OTP Rejection', true, `Rejected with HTTP 400: "${errText}"`);
     } else {
-      record(3, 'Wrong OTP Rejection', false, `Expected 400, got ${res.status}: ${JSON.stringify(data)}`);
+      record(3, 'Wrong OTP Rejection', false, `Expected 400, got ${res.status}: ${errText}`);
     }
   } catch (err: any) {
     record(3, 'Wrong OTP Rejection', false, err.message);
@@ -105,10 +115,11 @@ async function runE2ETests() {
       body: JSON.stringify({ mobile: testMobile, otp: devOtp }),
     });
     const data = await res.json();
-    if (res.status === 400 && data.message.includes('expired')) {
-      record(4, 'Expired OTP Handling', true, `Correctly rejected expired challenge: "${data.message}"`);
+    const errText = getErrorString(data);
+    if (res.status === 400 && errText.includes('expired')) {
+      record(4, 'Expired OTP Handling', true, `Correctly rejected expired challenge: "${errText}"`);
     } else {
-      record(4, 'Expired OTP Handling', false, `Expected 400 expired, got ${res.status}`);
+      record(4, 'Expired OTP Handling', false, `Expected 400 expired, got ${res.status}: ${errText}`);
     }
   } catch (err: any) {
     record(4, 'Expired OTP Handling', false, err.message);
@@ -136,10 +147,11 @@ async function runE2ETests() {
       body: JSON.stringify({ mobile: testMobile }),
     });
     const data = await res.json();
-    if (res.status === 429 && data.message.includes('Too many OTP requests')) {
-      record(5, 'Hourly Rate Limiting', true, `Triggered threshold of 5 requests: "${data.message}"`);
+    const errText = getErrorString(data);
+    if (res.status === 429 && errText.includes('Too many OTP requests')) {
+      record(5, 'Hourly Rate Limiting', true, `Triggered threshold of 5 requests: "${errText}"`);
     } else {
-      record(5, 'Hourly Rate Limiting', false, `Expected 429, got ${res.status}`);
+      record(5, 'Hourly Rate Limiting', false, `Expected 429, got ${res.status}: ${errText}`);
     }
     // Clean up artificial challenges
     await prisma.otpChallenge.deleteMany({ where: { mobile: testMobile } });
@@ -150,7 +162,6 @@ async function runE2ETests() {
   // ----------------------------------------------------
   // TEST 6: New Consumer Registration
   // ----------------------------------------------------
-  let consumerSessionToken = '';
   let consumerCookie = '';
   let consumerUserId = '';
   try {
@@ -169,8 +180,6 @@ async function runE2ETests() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ mobile: testMobile, otp: devOtp, name: 'Ananya Sharma' }),
     });
-    const cookieHeader = verifyRes.headers.get('set-cookie') || '';
-    consumerCookie = cookieHeader.split(';')[0];
     const verifyData = await verifyRes.json();
 
     if (
@@ -178,7 +187,7 @@ async function runE2ETests() {
       verifyData.user.roles.includes('CONSUMER') &&
       verifyData.user.isMobileVerified
     ) {
-      consumerSessionToken = verifyData.sessionToken;
+      consumerCookie = `auth_session=${verifyData.sessionToken}`;
       consumerUserId = verifyData.user.id;
       record(6, 'New Consumer Registration', true, `User ${verifyData.user.name} (${verifyData.user.mobile}) registered with CONSUMER role`);
     } else {
@@ -199,7 +208,7 @@ async function runE2ETests() {
     });
     const replayData = await replayRes.json();
     if (replayRes.status === 400) {
-      record(7, 'OTP Replay Protection', true, `Prevented consumed OTP replay: "${replayData.message}"`);
+      record(7, 'OTP Replay Protection', true, `Prevented consumed OTP replay: "${getErrorString(replayData)}"`);
     } else {
       record(7, 'OTP Replay Protection', false, `Expected 400 replay reject, got ${replayRes.status}`);
     }
@@ -247,6 +256,7 @@ async function runE2ETests() {
     });
     const verifyData = await verifyRes.json();
     if (verifyRes.status === 200 && verifyData.user.id === consumerUserId) {
+      consumerCookie = `auth_session=${verifyData.sessionToken}`;
       record(9, 'Existing User Login', true, `Successfully logged in existing user ID ${consumerUserId}`);
     } else {
       record(9, 'Existing User Login', false, `Failed existing login: ${JSON.stringify(verifyData)}`);
@@ -264,7 +274,7 @@ async function runE2ETests() {
     });
     const data = await res.json();
     if (res.status === 403) {
-      record(10, 'Unauthorized Merchant Boundary Check', true, `Consumer access to merchant endpoint denied with HTTP 403: "${data.message}"`);
+      record(10, 'Unauthorized Merchant Boundary Check', true, `Consumer access to merchant endpoint denied with HTTP 403: "${getErrorString(data)}"`);
     } else {
       record(10, 'Unauthorized Merchant Boundary Check', false, `Expected 403, got ${res.status}`);
     }
@@ -281,7 +291,7 @@ async function runE2ETests() {
     });
     const data = await res.json();
     if (res.status === 403) {
-      record(11, 'Unauthorized Admin Boundary Check', true, `Consumer access to admin endpoint denied with HTTP 403: "${data.message}"`);
+      record(11, 'Unauthorized Admin Boundary Check', true, `Consumer access to admin endpoint denied with HTTP 403: "${getErrorString(data)}"`);
     } else {
       record(11, 'Unauthorized Admin Boundary Check', false, `Expected 403, got ${res.status}`);
     }
@@ -307,12 +317,13 @@ async function runE2ETests() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ mobile: adminMobile, otp: reqData.devOtp }),
     });
-    const adminCookie = (verifyRes.headers.get('set-cookie') || '').split(';')[0];
+    const verifyData = await verifyRes.json();
+    const adminCookie = `auth_session=${verifyData.sessionToken}`;
 
     const adminCheckRes = await fetch(`${API_BASE}/roles/admin-check`, {
       headers: { Cookie: adminCookie },
     });
-    const adminCheckData = await adminCheckRes.json();
+    await adminCheckRes.json();
 
     const rolesListRes = await fetch(`${API_BASE}/roles`, {
       headers: { Cookie: adminCookie },
@@ -369,7 +380,7 @@ async function runE2ETests() {
       method: 'POST',
       headers: { Cookie: consumerCookie },
     });
-    const logoutData = await logoutRes.json();
+    await logoutRes.json();
 
     // Verify session is now rejected
     const meRes = await fetch(`${API_BASE}/auth/me`, {
@@ -450,7 +461,7 @@ async function runE2ETests() {
   }
 
   // ----------------------------------------------------
-  // TEST 18: Frontend Protected Routes HTTP Verification
+  // TEST 18: Frontend Authentication & Dashboard Routes HTTP Verification
   // ----------------------------------------------------
   try {
     const frontendUrls = [

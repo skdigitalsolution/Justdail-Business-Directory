@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HttpException, HttpStatus, BadRequestException, ForbiddenException } from '@nestjs/common';
+import { HttpException, BadRequestException } from '@nestjs/common';
 import { RoleType, AccountStatus } from '@prisma/client';
 import * as crypto from 'crypto';
 import { AuthService } from './auth.service';
